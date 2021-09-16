@@ -5,6 +5,12 @@ then
     exit 1
 fi
 
+if [ -f /etc/ssh/sshrc ];
+then
+    echo -e "\033[0;31m/etc/ssh/sshrc exists, installation would overwrite this file, aborting...\033[0m" 1>&2
+    exit 1
+fi
+
 sed s/MASTER_USER/"$1"/ <<'EOF' > /etc/ssh/sshrc
 #!/bin/bash
 if [ $(whoami) != "MASTER_USER" ];
