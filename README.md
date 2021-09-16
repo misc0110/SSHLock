@@ -10,4 +10,14 @@ The user currently holding the lock is stored in the world-writable file `/etc/s
 The `machine-lock` and `machine-unlock` scripts simply modify this file. 
 An administrator user given during installation is always exempt from the locking logic. 
 
-## Installation
+## Install
+Run 
+
+    install.sh <admin>
+
+as root user, where `<admin>` is a username that should be exempt from the locking mechanism (e.g., `root`). 
+
+**Warning**: any existing `/etc/ssh/sshrc` will be overwritten!
+
+## Uninstall
+Simply run `uninstall.sh` as root user.
