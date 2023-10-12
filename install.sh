@@ -18,7 +18,7 @@ then
         cur=$(whoami)
         if [ $(grep -ce "^$cur\$" /etc/ssh/lock) = 0 ];
         then
-                lock=$(cat /etc/ssh/lock | tr -s '\n' ' ')
+                lock=$(cat /etc/ssh/lock | tr -s '\n' ' ' | sed 's/ *$//')
                 echo "" 1>&2
                 echo "" 1>&2
                 echo "[sshlock] \033[0;31mMachine is locked by $lock! Exiting now...\033[0m" 1>&2
@@ -50,7 +50,7 @@ touch /etc/ssh/lock
 chmod a+w /etc/ssh/lock
 cat <<'EOF' > /usr/local/bin/machine-lock
 #!/bin/bash
-lock=$(cat /etc/ssh/lock | tr -s '\n' ' ')
+lock=$(cat /etc/ssh/lock | tr -s '\n' ' ' | sed 's/ *$//')
 if [ "$lock" != "" ];
 then
     echo -e "\033[0;33mMachine is already locked by $lock! Overwriting lock\033[0m"
@@ -61,7 +61,7 @@ EOF
 chmod +x /usr/local/bin/machine-lock
 cat <<'EOF' > /usr/local/bin/machine-unlock
 #!/bin/bash
-lock=$(cat /etc/ssh/lock | tr -s '\n' ' ')
+lock=$(cat /etc/ssh/lock | tr -s '\n' ' ' | sed 's/ *$//')
 current=$(whoami)
 if [ "$lock" == "" ];
 then
@@ -78,7 +78,7 @@ EOF
 chmod +x /usr/local/bin/machine-unlock
 cat <<'EOF' > /usr/local/bin/machine-lock-add
 #!/bin/bash
-lock=$(cat /etc/ssh/lock)
+lock=$(cat /etc/ssh/lock | tr -s '\n' ' ' | sed 's/ *$//')
 current=$(whoami)
 if [ "$lock" == "" ];
 then
