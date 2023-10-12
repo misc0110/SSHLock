@@ -19,12 +19,15 @@ then
         if [ $(grep -ce "^$cur\$" /etc/ssh/lock) = 0 ];
         then
                 lock=$(cat /etc/ssh/lock | tr -s '\n' ' ' | sed 's/ *$//')
-                echo "" 1>&2
-                echo "" 1>&2
-                echo "[sshlock] \033[0;31mMachine is locked by $lock! Exiting now...\033[0m" 1>&2
-                echo "" 1>&2
-                pkill -KILL -u $(whoami)
-                kill -TERM $PPID
+		if [ "$lock" != "" ];
+		then
+	                echo "" 1>&2
+        	        echo "" 1>&2
+                	echo "[sshlock] \033[0;31mMachine is locked by $lock! Exiting now...\033[0m" 1>&2
+	                echo "" 1>&2
+        	        pkill -KILL -u $(whoami)
+                	kill -TERM $PPID
+		fi
         fi
 fi
 # X11 forwarding
